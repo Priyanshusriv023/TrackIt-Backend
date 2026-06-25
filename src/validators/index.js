@@ -1,5 +1,6 @@
-import {body} from "express-validator"
+import {body,param} from "express-validator"
 
+//auth validators
 export const userRegisterValidator = () => {
     return [
         body("email")
@@ -74,4 +75,144 @@ export const userResetForgotPasswordValidator = ()=> {
              .withMessage("Password is required")
              
           ]
+}
+
+
+
+
+// Application validators
+export const createApplicationValidator = () => {
+    return [
+        body("companyName")
+            .trim()
+            .notEmpty()
+            .withMessage("Company name is required"),
+
+        body("role")
+            .trim()
+            .notEmpty()
+            .withMessage("Role is required"),
+
+        body("currentStatus")
+            .optional()
+            .isIn(["Applied", "OA", "Interview Round 1", "Interview Round 2", "HR Round", "Offer", "Rejected"])
+            .withMessage("Invalid status value"),
+
+        body("jobUrl")
+            .optional()
+            .trim(),
+
+        body("location")
+            .optional()
+            .trim(),
+
+        body("ctc")
+            .optional()
+            .trim(),
+
+        body("appliedDate")
+            .optional()
+            .isISO8601()
+            .withMessage("Invalid date format"),
+
+        body("notes")
+            .optional()
+            .trim(),
+    ]
+}
+
+export const updateApplicationValidator = () => {
+    return [
+        body("companyName")
+            .optional()
+            .trim()
+            .notEmpty()
+            .withMessage("Company name cannot be empty"),
+
+        body("role")
+            .optional()
+            .trim()
+            .notEmpty()
+            .withMessage("Role cannot be empty"),
+
+        body("currentStatus")
+            .optional()
+            .isIn(["Applied", "OA", "Interview Round 1", "Interview Round 2", "HR Round", "Offer", "Rejected"])
+            .withMessage("Invalid status value"),
+
+        body("appliedDate")
+            .optional()
+            .isISO8601()
+            .withMessage("Invalid date format"),
+
+        body("notes")
+            .optional()
+            .trim(),
+    ]
+}
+
+// Interview Round validators
+export const addInterviewRoundValidator = () => {
+    return [
+        body("roundName")
+            .trim()
+            .notEmpty()
+            .withMessage("Round name is required"),
+
+        body("roundDate")
+            .optional()
+            .isISO8601()
+            .withMessage("Invalid date format"),
+
+        body("performanceRating")
+            .optional()
+            .isInt({ min: 1, max: 5 })
+            .withMessage("Performance rating must be between 1 and 5"),
+
+        body("outcome")
+            .optional()
+            .isIn(["cleared", "rejected", "waiting"])
+            .withMessage("Invalid outcome value"),
+
+        body("questionsAsked")
+            .optional()
+            .trim(),
+
+        body("notes")
+            .optional()
+            .trim(),
+    ]
+}
+
+export const updateInterviewRoundValidator = () => {
+    return [
+        body("roundName")
+            .optional()
+            .trim()
+            .notEmpty()
+            .withMessage("Round name cannot be empty"),
+
+        body("roundDate")
+            .optional()
+            .isISO8601()
+            .withMessage("Invalid date format"),
+
+        body("performanceRating")
+            .optional()
+            .isInt({ min: 1, max: 5 })
+            .withMessage("Performance rating must be between 1 and 5"),
+
+        body("outcome")
+            .optional()
+            .isIn(["cleared", "rejected", "waiting"])
+            .withMessage("Invalid outcome value"),
+
+        body("questionsAsked")
+            .optional()
+            .trim(),
+
+        body("notes")
+            .optional()
+            .trim(),
+    ]
 }
