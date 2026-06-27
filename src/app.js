@@ -3,6 +3,11 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoute from "./routes/auth.routes.js";
 import applicationRouter from "./routes/application.routes.js"
+import interviewRouter from "./routes/interviewRound.routes.js"
+import analyticsRouter from "./routes/analytics.routes.js"
+
+
+
 
 
 const app = express();
@@ -38,7 +43,10 @@ app.get("/api/v1/healthcheck", (req, res) => {
 })
 
 app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/applications", applicationRouter);
+app.use("/api/v1/applications", applicationRouter)
+app.use("/api/v1/applications", interviewRouter)
+app.use("/api/v1/analytics", analyticsRouter)
+
 
 
 app.get("/", (req, res) => {
