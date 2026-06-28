@@ -79,8 +79,29 @@ const forgotPasswordMailgenContent = (username, passwordResetUrl) => {
     }
 }
 
+const reminderMailgenContent = (username, companyName, role, currentStatus) => {
+    return {
+        body: {
+            name: username,
+            intro: `This is a reminder for your job application at ${companyName}.`,
+            table: {
+                data: [
+                    { field: "Company", value: companyName },
+                    { field: "Role", value: role },
+                    { field: "Current Status", value: currentStatus }
+                ],
+                columns: {
+                    customHead: ["Field", "Value"]
+                }
+            },
+            outro: "Login to TrackIt to update your application status."
+        }
+    }
+}
+
 export {
     emailVerificationMailgenContent,
     forgotPasswordMailgenContent,
+    reminderMailgenContent,
     sendEmail,
 }

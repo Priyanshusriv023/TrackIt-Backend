@@ -1,5 +1,6 @@
 import {body,param} from "express-validator"
 
+
 //auth validators
 export const userRegisterValidator = () => {
     return [

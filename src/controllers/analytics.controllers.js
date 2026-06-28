@@ -22,8 +22,10 @@ const getDashboardStats = asynchandler(async (req, res) => {
 
     // convert array to object { Applied: 5, OA: 2 ... }
     const byStatus = {}
+    
     statusStats.forEach(item => {
         byStatus[item._id] = item.count
+         
     })
 
     const totalApplications = Object.values(byStatus).reduce((a, b) => a + b, 0)
