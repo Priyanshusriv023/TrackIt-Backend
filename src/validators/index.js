@@ -168,8 +168,8 @@ export const addInterviewRoundValidator = () => {
         body("performanceRating")
             .optional()
             .isInt({ min: 1, max: 5 })
-            .withMessage("Performance rating must be between 1 and 5"),
-
+            .withMessage("Performance rating must be between 1 and 5")
+            .toInt(),
         body("outcome")
             .optional()
             .isIn(["cleared", "rejected", "waiting"])
@@ -201,7 +201,8 @@ export const updateInterviewRoundValidator = () => {
         body("performanceRating")
             .optional()
             .isInt({ min: 1, max: 5 })
-            .withMessage("Performance rating must be between 1 and 5"),
+            .withMessage("Performance rating must be between 1 and 5")
+            .toInt(),
 
         body("outcome")
             .optional()

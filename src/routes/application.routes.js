@@ -5,6 +5,7 @@ import {
     getApplicationById,
     updateApplication,
     deleteApplication,
+    deleteStatusHistoryEntry
 } from "../controllers/application.controllers.js"
 import { validate } from "../middlewares/validator.middleware.js"
 import {
@@ -26,5 +27,7 @@ router.route("/:applicationId")
     .get(getApplicationById)
     .patch(updateApplicationValidator(), validate, updateApplication)
     .delete(deleteApplication)
+    
+router.route("/:applicationId/status-history/:entryId").delete(deleteStatusHistoryEntry);
 
 export default router

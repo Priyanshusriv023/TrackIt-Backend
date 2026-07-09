@@ -144,6 +144,34 @@ const getApplicationById = asynchandler(async(req,res) => {
            )
 });
 
-export {createApplication ,getUserApplications,getApplicationById,updateApplication,deleteApplication}
+
+const deleteStatusHistoryEntry = asynchandler(async (req, res) => {
+    const { applicationId, entryId } = req.params;
+
+    const application = await Application.findOne({
+        _id: applicationId,
+        userId: req.user._id
+    });
+
+    if (!application) {
+        throw new apiError(404, "Application not found");
+    }
+
+    application.statusHistory = application.statusHistory.filter(
+        entry => entry._id.toString() !== entryId
+    );
+
+    // auto update currentStatus to last entry in history
+    const lastEntry = application.statusHistory[application.statusHistory.length - 1];
+    application.currentStatus = lastEntry.status;
+
+    await application.save({ validateBeforeSave: false });
+
+    return res.status(200).json(new apiResponse(200, application, "Status entry deleted"));
+});
+
+
+
+export {createApplication ,getUserApplications,getApplicationById,updateApplication,deleteApplication,deleteStatusHistoryEntry }
 
         
