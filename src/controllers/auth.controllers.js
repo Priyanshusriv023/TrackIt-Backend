@@ -103,14 +103,17 @@ const loginUser = asynchandler(async (req,res)=> {
             throw new apiError(400,"user does not exist")
 
          }
-
+         
          const isPassword = await user.isPasswordCorrect(password)
 
          if(!isPassword){
             throw new apiError(400,"Invalid Password")
          }
-
          
+         
+         if(!user.isEmailVerified){
+            throw new apiError(403,"Email is not verified. Please verify your email first")
+         }
 
          const {accessToken,refreshToken} = await generateAccessandRefreshToken(user._id)
          
@@ -158,7 +161,7 @@ const logoutUser = asynchandler(async (req,res)=>{
                secure: true,
           }
 
-          res
+         return res
           .status(200)
           .clearCookie("accessToken",options)
           .clearCookie("refreshToken",options)
@@ -266,7 +269,7 @@ const refreshAccessToken = asynchandler(async (req,res)=> {
           if(!incomingRefreshToken){
               throw new apiError(401,"Unauthorized access")
           }
-
+ 
           try{
                  const decodedToken = jwt.verify(incomingRefreshToken,process.env.REFRESH_TOKEN_SECRET)
                  const user = await User.findById(decodedToken._id)
@@ -280,7 +283,7 @@ const refreshAccessToken = asynchandler(async (req,res)=> {
                  }
                 
                  
-
+                
                  const options = {
                     httpOnly: true,
                     secure: true,
@@ -391,7 +394,7 @@ const resetForgotPassword = asynchandler(async (req,res)=>{
 
 const changeCurrentPassword = asynchandler(async (req,res)=> {
          const {oldPassword,newPassword} = req.body;
-
+         
          const user = await User.findById(req.user?._id)
 
          if(!user){
